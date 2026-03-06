@@ -1,0 +1,29 @@
+{
+  "name": "icook",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/DusanStoiljkovic/iCook#readme",
+  "bugs": {
+    "url": "https://github.com/DusanStoiljkovic/iCook/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DusanStoiljkovic/iCook.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "core-js": "^3.48.0",
+    "parcel": "^2.16.4",
+    "regenerator-runtime": "^0.14.1",
+    "sass": "^1.26.10"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.16.4"
+  }
+}

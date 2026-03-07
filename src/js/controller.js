@@ -30,11 +30,13 @@ const renderSpinner = parentEl => {
   parentEl.insertAdjacentHTML('afterbegin', markup);
 };
 
-const showRecipes = async search => {
+const showRecipes = async () => {
   try {
+    const id = window.location.hash.slice(1);
+    if (!id) return;
     // 1) Fetcing data
     renderSpinner(recipeContainer);
-    const res = await fetch(`${url2}${search}`);
+    const res = await fetch(`${url2}${id}`);
     if (!res.ok) throw new Error('Error: ');
     const data = await res.json();
     let { recipe } = data.data;
@@ -155,4 +157,4 @@ const showRecipes = async search => {
   }
 };
 
-showRecipes('5ed6604591c37cdc054bc886');
+['hashchange', 'load'].forEach(ev => window.addEventListener(ev, showRecipes));

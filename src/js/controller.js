@@ -1,15 +1,15 @@
 import * as model from './model.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
+import resultsView from './views/resultsView.js';
+import paginationView from './views/paginationView.js';
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-const recipeContainer = document.querySelector('.recipe');
-const ingredientsList = document.querySelector('.recipe__ingredient-list');
 
-// NEW API URL (instead of the one shown in the video)
-// https://forkify-api.jonas.io
-///////////////////////////////////////
+if (module.hot) {
+  module.hot.accept();
+}
 
 const controlRecipes = async () => {
   try {
@@ -19,7 +19,6 @@ const controlRecipes = async () => {
 
     // 1) Loading recipe
     await model.loadRecipe(id);
-    let { recipe } = model.state;
 
     // 2) Rendering recipe
     recipeView.render(model.state.recipe);
@@ -30,6 +29,8 @@ const controlRecipes = async () => {
 
 const controlSearchResults = async () => {
   try {
+    resultsView.renderSpinner();
+
     // 1) Get Search Query
     const query = searchView.getQuery();
     if (!query) return;
@@ -39,16 +40,27 @@ const controlSearchResults = async () => {
 
     // 3) Render results
     console.log('Results: ', model.state.search.results);
+    resultsView.render(model.getSearchResultsPage(1));
+
+    // 4) Render initial pagination buttons
+    paginationView.render(model.state.search);
   } catch (err) {
     console.log(err);
   }
 };
 
-controlSearchResults();
+const controlPagination = goToPage => {
+  // 1) Render new results
+  resultsView.render(model.getSearchResultsPage(goToPage));
+
+  // 2) Render view page
+  paginationView.render(model.state.search);
+};
 
 const init = () => {
   recipeView.addHandlerRender(controlRecipes);
   searchView.addHandlerSearch(controlSearchResults);
+  paginationView.addHandlerClick(controlPagination);
 };
 
 init();

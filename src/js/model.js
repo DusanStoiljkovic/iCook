@@ -3,7 +3,9 @@ import { async } from 'regenerator-runtime';
 import { getJSON } from './helpers.js';
 
 export const state = {
-  recipe: {},
+  recipe: {
+    servings: 4,
+  },
   search: {
     page: 1,
     query: '',
@@ -57,4 +59,12 @@ export const getSearchResultsPage = page => {
   const end = page * state.search.resultsPerPage;
 
   return state.search.results.slice(start, end);
+};
+
+export const updateServings = newServings => {
+  state.recipe.ingredients.forEach(ing => {
+    ing.quantity = ing.quantity * (newServings / state.recipe.servings);
+  });
+
+  state.recipe.servings = newServings;
 };
